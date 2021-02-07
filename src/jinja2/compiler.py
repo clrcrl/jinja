@@ -1153,6 +1153,18 @@ class CodeGenerator(NodeVisitor):
             self.blockvisit(node.else_, if_frame)
             self.outdent()
 
+    def visit_Try(self, node, frame):
+        try_frame = frame.soft()
+        self.writeline("try:", node)
+        self.indent()
+        self.blockvisit(node.body, try_frame)
+        self.outdent()
+        if node.except_:
+            self.writeline("except:", node)
+            self.indent()
+            self.blockvisit(node.except_, try_frame)
+            self.outdent()
+
     def visit_Macro(self, node, frame):
         macro_frame, macro_ref = self.macro_body(node, frame)
         self.newline()

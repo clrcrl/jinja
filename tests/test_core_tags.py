@@ -338,6 +338,16 @@ class TestIfCondition:
         assert tmpl.render() == "1"
 
 
+class TestTry:
+    def test_simple(self, env):
+        tmpl = env.from_string("""{% try %}...{% endtry %}""")
+        assert tmpl.render() == "..."
+
+    def test_except(self, env):
+        tmpl = env.from_string("""{% try %}{{ 'a' + 1 }}{% except %}...{% endtry %}""")
+        assert tmpl.render() == "..."
+
+
 class TestMacros:
     def test_simple(self, env_trim):
         tmpl = env_trim.from_string(

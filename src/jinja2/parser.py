@@ -9,6 +9,7 @@ _statement_keywords = frozenset(
     [
         "for",
         "if",
+        "try",
         "block",
         "extends",
         "print",
@@ -227,6 +228,16 @@ class Parser:
                 result.else_ = self.parse_statements(("name:endif",), drop_needle=True)
             break
         return result
+
+    def parse_try(self):
+        """Parse a try construct"""
+        node = nodes.Try(lineno=self.stream.expect("name:try").lineno)
+        node.body = self.parse_statements(("name:except", "name:endtry"))
+        node.except_ = None
+        token = next(self.stream)
+        if token.test("name:except"):
+            node.except_ = self.parse_statements(("name:endtry",), drop_needle=True)
+        return node
 
     def parse_with(self):
         node = nodes.With(lineno=next(self.stream).lineno)

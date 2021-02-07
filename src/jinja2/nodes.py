@@ -306,6 +306,12 @@ class If(Stmt):
     fields = ("test", "body", "elif_", "else_")
 
 
+class Try(Stmt):
+    """If `body` returns an error, `except` is rendered."""
+
+    fields = ("body", "except_")
+
+
 class Macro(Stmt):
     """A macro definition.  `name` is the name of the macro, `args` a list of
     arguments and `defaults` a list of defaults if there are any.  `body` is
